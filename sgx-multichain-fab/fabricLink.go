@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	org1CfgPath = "/home/guotiezheng/go/src/sgx-multichain-fab/fabricLink/config/org1sdk-config.yaml"
-	org2CfgPath = "/home/guotiezheng/go/src/sgx-multichain-fab/fabricLink/config/org2sdk-config.yaml"
+	org1CfgPath = "/home/guotiezheng/go/src/sgx-multichain/sgx-multichain-fab/config/org1sdk-config.yaml"
+	org2CfgPath = "/home/guotiezheng/go/src/sgx-multichain/sgx-multichain-fab/config/org2sdk-config.yaml"
 )
 
 var (
