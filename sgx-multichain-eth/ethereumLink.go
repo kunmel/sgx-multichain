@@ -13,7 +13,7 @@ import (
 
 func EthereumLink() {
 	// 连接rpc
-	client,err := ethclient.Dial("http://localhost:8545")
+	client,err := ethclient.Dial("http://10.108.16.218:8545")
 
 	// 定义要操作合约的账户地址
 	//addr := "0x6a2e96b16eec57ba9f21b1b5c5bdc476a2d3676f"
