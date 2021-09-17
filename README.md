@@ -1,4 +1,4 @@
-# 1sgx-multichain
+# sgx-multichain
 
 * 目前分别链接了fabric 1.4.3以及ethereum私链
 * 使用fabric-sdk-go连接fabric网络，使用了Shitaibin/fabric-sdk-go-sample作为基础进行修改，使其能够访问fabric并且调用链码
@@ -9,6 +9,7 @@
 ## 项目结构
 
 sgx-multichain
+
 ├── key
 
 ├── multichain_proto
@@ -27,9 +28,9 @@ sgx-multichain
 
 ## 通信结构
 
-DB ── 15432 ── sgx ──  22222 ── fabric-sdk-go
-
-​									└─── 33333 ── eth rpc							 
+DB ── 15432 ── sgx ──  2222 ── fabric-sdk-go
+      
+sgx ─── 3333 ── eth rpc							 
 
 ## 需要注意的点
 
