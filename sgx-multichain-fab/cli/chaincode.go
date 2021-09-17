@@ -101,13 +101,19 @@ func (c *Client) genPolicy(p string) (*common.SignaturePolicyEnvelope, error) {
 	return cauthdsl.FromString(p)
 }
 
-func (c *Client) InvokeCC(peers []string) (fab.TransactionID, error) {
+func (c *Client) InvokeCC(peers []string,  ccName string, ccArgs []string, fcnName string) (fab.TransactionID, error) {
 	// new channel request for invoke
-	args := packArgs([]string{"a", "b", "10"})
+	//args := packArgs([]string{"a", "b", "10"})
+	//req := channel.Request{
+	//	ChaincodeID: "mycc",
+	//	Fcn:         "invoke",
+	//	Args:        args,
+	//}
+	args := packArgs(ccArgs)
 	req := channel.Request{
-		ChaincodeID: "mycc",
-		Fcn:         "invoke",
-		Args:        args,
+		ChaincodeID: ccName,
+		Fcn: fcnName,
+		Args: args,
 	}
 
 	// send request and handle response

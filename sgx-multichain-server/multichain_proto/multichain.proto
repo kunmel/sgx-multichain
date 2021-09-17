@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option go_package = "sgx-multichain-server/multichain_proto";
+
+package multichain_proto;
+
+service multichainService {
+  rpc NewFabTx(NewFabRequest) returns (stream CommitResponse) {}
+  rpc NewEthTx(NewEthRequest) returns (stream CommitResponse) {}
+}
+
+message NewFabRequest {
+  string CCName = 1;
+  string FcnName = 2;
+  repeated string CCArg = 3;
+}
+message NewEthRequest {
+  string KeystorePath = 1;
+  string ChainID = 2;
+  string Pass = 3;
+  string ContractAddress = 4;
+  string FcnName = 5;
+  string ContractArg =6;
+}
+message CommitResponse {
+  int32 StatusCode = 1;
+}
