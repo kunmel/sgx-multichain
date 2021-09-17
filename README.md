@@ -1,4 +1,4 @@
-# sgx-multichain
+# 1sgx-multichain
 
 * 目前分别链接了fabric 1.4.3以及ethereum私链
 * 使用fabric-sdk-go连接fabric网络，使用了Shitaibin/fabric-sdk-go-sample作为基础进行修改，使其能够访问fabric并且调用链码
@@ -10,13 +10,20 @@
 
 sgx-multichain
 ├── key
+
 ├── multichain_proto
+
 ├── README.md
+
 ├── sgx-multichain-eth
+
 ├── sgx-multichain-fab
+
 └── sgx-multichain-server
 
-其中sgx-multichain-server为部署在sgx端的服务，其所需使用的秘钥、proto文件等均在文件夹内，只需直接复制到docker内并构建occlum。而其他key、proto等则是在本地构建eth、fab时所需要的，eth、fab两个文件夹分别包含连接两个区块链的server端，使用了go mod进行包的管理。
+其中sgx-multichain-server为部署在sgx端的服务，其所需使用的秘钥、proto文件等均在文件夹内，只需直接复制到docker内并构建occlum。
+
+而其他key、proto等则是在本地构建eth、fab时所需要的，eth、fab两个文件夹分别包含连接两个区块链的server端，使用了go mod进行包的管理。
 
 ## 通信结构
 
@@ -33,8 +40,7 @@ DB ── 15432 ── sgx ──  22222 ── fabric-sdk-go
   * 这会导致后续放在一起编译时由于版本不同、结构不同导致报错，所以在linker的go.mod添加`github.com/golang/protobuf => github.com/golang/protobuf v1.3.3`
   
 * 转到docker内要做的操作：
-  * eth的秘钥文件、ethereum/contract 复制并修改地址
-  * fabric-samples下的文件复制并修改地址
+  * gPRC使用TLS所需的秘钥文件需要复制到occlum的镜像中
   * 所有ip都要改为真实ip，不能使用localhost
-  * 别忘了打开111module以及设置goproxy
-
+  
+    
