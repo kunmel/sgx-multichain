@@ -20,7 +20,7 @@ func NewServer() *MultichainServiceServer {
 	}
 }
 func main() {
-	lis,err := net.Listen("tcp", "10.108.16.218:3333")
+	lis,err := net.Listen("tcp", ":3333")
 	if err != nil {
 		log.Fatalln("cannot create a listener at the address")
 	}
@@ -35,8 +35,8 @@ func main() {
 }
 
 func (s * MultichainServiceServer) NewEthTx (request *pb.NewEthRequest, stream pb.MultichainService_NewEthTxServer) error {
-	statusCode := ethereumLink.EthereumLink(request.KeystorePath, request.ChainID, request.Pass, request.ContractAddress, request.FcnName, request.ContractArg)
-	response := pb.CommitResponse{StatusCode: statusCode}
+	statusCode, txID := ethereumLink.EthereumLink(request.KeystorePath, request.ChainID, request.Pass, request.ContractAddress, request.FcnName, request.ContractArg)
+	response := pb.CommitResponse{StatusCode: statusCode, TxID: txID}
 	err := stream.Send(&response)
 	if err != nil {
 		return err

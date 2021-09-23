@@ -20,9 +20,10 @@ func NewServer() *MultichainServiceServer {
 	}
 }
 func main() {
-	lis,err := net.Listen("tcp", "10.108.16.218:2222")
+	lis,err := net.Listen("tcp", ":2222")
 	if err != nil {
 		log.Fatalln("cannot create a listener at the address")
+		log.Fatalln(err)
 	}
 	creds, err := credentials.NewServerTLSFromFile("../key/test.pem", "../key/test.key")
 	if err != nil {
@@ -35,8 +36,8 @@ func main() {
 }
 
 func (s * MultichainServiceServer) NewFabTx (request *pb.NewFabRequest, stream pb.MultichainService_NewFabTxServer) error {
-	statusCode := fabricLink.FabricLink(request.CCName, request.CCArg, request.FcnName)
-	response := pb.CommitResponse{StatusCode: statusCode}
+	statusCode, txID := fabricLink.FabricLink(request.CCName, request.CCArg, request.FcnName)
+	response := pb.CommitResponse{StatusCode: statusCode, TxID: txID}
 	err := stream.Send(&response)
 	if err != nil {
 		return err

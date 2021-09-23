@@ -24,4 +24,6 @@ message NewEthRequest {
 }
 message CommitResponse {
   int32 StatusCode = 1;
+  string txID = 2;
+  string blockID = 3;
 }

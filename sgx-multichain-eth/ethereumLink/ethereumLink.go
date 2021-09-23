@@ -11,9 +11,9 @@ import (
 	"os"
 )
 
-func EthereumLink(keystorePath string, chainID string, pass string, contractAddr string, fcnName string, contractArg string) int32 {
+func EthereumLink(keystorePath string, chainID string, pass string, contractAddr string, fcnName string, contractArg string) (int32, string) {
 	// 连接rpc
-	client,err := ethclient.Dial("http://10.108.16.218:8545")
+	client,err := ethclient.Dial("http://127.0.0.1:8545")
 
 	// 定义要操作合约的账户地址
 	//addr := "0x6a2e96b16eec57ba9f21b1b5c5bdc476a2d3676f"
@@ -25,30 +25,30 @@ func EthereumLink(keystorePath string, chainID string, pass string, contractAddr
 	contract_addr := common.HexToAddress(contractAddr)
 	if err != nil {
 		panic("连接以太坊合约出错")
-		return 404
+		return 404, ""
 	}
 
 	// 创建合约对象
 	contract_obj,err11 := contract.NewContract(contract_addr,client)
 	if err11 !=nil {
 		panic("创建合约对象出错")
-		return 404
+		return 404, ""
 	}
 	// 生成调用合约需要的用户
 	//auth, err := MakeAuth("123456")
 	auth, err := MakeAuth(pass, keystorePath, chainID)
 	// 调用合约函数
 	//_, err = contract_obj.Hold(auth, "GOD")
-	_, err = contract_obj.Hold(auth, contractArg)
+	tx, err := contract_obj.Hold(auth, contractArg)
 	// ethereum/accounts/abi/bind/base.go line:150 显示可以直接使用nil
 	holdStr, err := contract_obj.GetHold(nil)
 	fmt.Println(holdStr)
 	//_, err = contract_obj.GetHold(auth)
 	if err != nil {
 		fmt.Println(err)
-		return 404
+		return 404, ""
 	}
-	return 200
+	return 200, tx.Hash().String()
 }
 
 func MakeAuth(pass string, fileName string, chainIDhex string) (*bind.TransactOpts, error) {

@@ -16,7 +16,7 @@ var (
 	peer0Org2 = "peer0.org2.example.com"
 )
 
-func FabricLink(ccName string, ccArgs []string, fcnName string) int32 {
+func FabricLink(ccName string, ccArgs []string, fcnName string) (int32, string) {
 	org1Client := cli.New(org1CfgPath, "Org1", "Admin", "User1")
 	org2Client := cli.New(org2CfgPath, "Org2", "Admin", "User1")
 
@@ -28,21 +28,21 @@ func FabricLink(ccName string, ccArgs []string, fcnName string) int32 {
 }
 
 
-func DealTx(cli1, cli2 *cli.Client, ccName string, ccArgs []string, fcnName string) int32 {
+func DealTx(cli1, cli2 *cli.Client, ccName string, ccArgs []string, fcnName string) (int32, string) {
 	log.Println("=================== DealTx begin ===================")
 	defer log.Println("=================== DealTx end ===================")
-
-	if _, err := cli1.InvokeCC([]string{peer0Org1, peer0Org2}, ccName, ccArgs, fcnName); err != nil {
+	txID, err := cli1.InvokeCC([]string{peer0Org1, peer0Org2}, ccName, ccArgs, fcnName)
+	if err != nil {
 		log.Panicf("Invoke chaincode error: %v", err)
-		return 404
+		return 404, ""
 	}
 	log.Println("Invoke chaincode success")
 
 	if err := cli1.QueryCC("peer0.org1.example.com", "a"); err != nil {
 		log.Panicf("Query chaincode error: %v", err)
-		return 404
+		return 404, ""
 	}
 	log.Println("Query chaincode success on peer0.org1")
-	return 200
+	return 200, string(txID)
 }
 
