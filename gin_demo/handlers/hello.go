@@ -25,16 +25,17 @@ func PutOnChain(c *gin.Context) {
 	var response int32
 	var blockID string
 	var txID string
-	arg1 := c.Query("arg1")
+	id := c.Query("id")
+	price := c.Query("price")
+	label := c.Query("label")
 	chainID := c.Query("chainID")
-	flag,_ := strconv.Atoi(arg1)
-	if  chainID == "hyperledger fabric" || flag < 10{
+	priceInt,_  := strconv.Atoi(price)
+	if  chainID == "hyperledger fabric" || priceInt < 10000 {
 		client = setupConnect(fabIP, fabPem, serverName)
-		response, blockID, txID = sendFab(client, "mycc", []string{"a","b","1"}, "invoke")
-	}
-	if chainID == "ethereum" || flag >=10{
+		response, blockID, txID = sendFab(client, "mycc", []string{id, price, label}, "writeLedger")
+	} else if chainID == "ethereum" || priceInt >=10000 {
 		client = setupConnect(ethIP, ethPem, serverName)
-		response, blockID, txID= sendEth(client, "UTC--2021-09-15T05-28-00.066630039Z--6a2e96b16eec57ba9f21b1b5c5bdc476a2d3676f", "22b8", "123456", "0x120615426fbf165d6673befb179f7faaa9f08c6a", "GetHold", "")
+		response, blockID, txID= sendEth(client, "UTC--2021-09-15T05-28-00.066630039Z--6a2e96b16eec57ba9f21b1b5c5bdc476a2d3676f", "22b8", "123456",  "0x5b2482996b7a203150a8691966e8a3f2b9138c3f", "addProject", id, price, label)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status" : decodeRsponse(response),
@@ -86,14 +87,16 @@ func sendFab(client pb.MultichainServiceClient, ccName string, ccArg []string, f
 	return statuscode, blockID, txID
 }
 
-func sendEth(client pb.MultichainServiceClient, keyPath string, chainID string, pass string, contractAddress string, fcnName string, contractArg string) (int32,string,string) {
+func sendEth(client pb.MultichainServiceClient, keyPath string, chainID string, pass string, contractAddress string, fcnName string, id string, price string, label string) (int32,string,string) {
 	serverStream, err := client.NewEthTx(context.Background(), &pb.NewEthRequest{
 		KeystorePath: keyPath,
 		ChainID: chainID,
 		Pass: pass,
 		ContractAddress: contractAddress,
 		FcnName: fcnName,
-		ContractArg: contractArg,
+		Id: id,
+		Price: price,
+		Label: label,
 	})
 	if err != nil {
 		log.Fatalln(err)

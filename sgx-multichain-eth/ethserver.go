@@ -35,7 +35,7 @@ func main() {
 }
 
 func (s * MultichainServiceServer) NewEthTx (request *pb.NewEthRequest, stream pb.MultichainService_NewEthTxServer) error {
-	statusCode, txID := ethereumLink.EthereumLink(request.KeystorePath, request.ChainID, request.Pass, request.ContractAddress, request.FcnName, request.ContractArg)
+	statusCode, txID := ethereumLink.EthereumLink(request.KeystorePath, request.ChainID, request.Pass, request.ContractAddress, request.FcnName, request.Id, request.Price, request.Label)
 	response := pb.CommitResponse{StatusCode: statusCode, TxID: txID}
 	err := stream.Send(&response)
 	if err != nil {

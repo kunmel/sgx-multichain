@@ -37,12 +37,17 @@ func DealTx(cli1, cli2 *cli.Client, ccName string, ccArgs []string, fcnName stri
 		return 404, ""
 	}
 	log.Println("Invoke chaincode success")
-
-	if err := cli1.QueryCC("peer0.org1.example.com", "a"); err != nil {
-		log.Panicf("Query chaincode error: %v", err)
+	_, err = cli1.InvokeCC([]string{peer0Org1, peer0Org2}, ccName, ccArgs, "readLedger")
+	if err != nil {
+		log.Panicf("Invoke chaincode error: %v", err)
 		return 404, ""
 	}
-	log.Println("Query chaincode success on peer0.org1")
+	log.Println("Invoke chaincode success")
+	//if err := cli1.InvokeCC("peer0.org1.example.com", "a"); err != nil {
+	//	log.Panicf("Query chaincode error: %v", err)
+	//	return 404, ""
+	//}
+	//log.Println("Query chaincode success on peer0.org1")
 	return 200, string(txID)
 }
 

@@ -20,7 +20,9 @@ message NewEthRequest {
   string Pass = 3;
   string ContractAddress = 4;
   string FcnName = 5;
-  string ContractArg =6;
+  string id = 6;
+  string price = 7;
+  string label = 8;
 }
 message CommitResponse {
   int32 StatusCode = 1;

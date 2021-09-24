@@ -1,17 +1,16 @@
 package ethereumLink
 
-
 import (
 	"fmt"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/ethclient/contract"
+	"github.com/ethereum/go-ethereum/ethclient/contract/putonchain"
 	"math/big"
 	"os"
 )
 
-func EthereumLink(keystorePath string, chainID string, pass string, contractAddr string, fcnName string, contractArg string) (int32, string) {
+func EthereumLink(keystorePath string, chainID string, pass string, contractAddr string, fcnName string, id string, price string, label string) (int32, string) {
 	// 连接rpc
 	client,err := ethclient.Dial("http://127.0.0.1:8545")
 
@@ -29,7 +28,8 @@ func EthereumLink(keystorePath string, chainID string, pass string, contractAddr
 	}
 
 	// 创建合约对象
-	contract_obj,err11 := contract.NewContract(contract_addr,client)
+	//contract_obj,err11 := contract.NewContract(contract_addr,client)
+	contract_obj,err11 := putonchain.NewPutonchain(contract_addr,client)
 	if err11 !=nil {
 		panic("创建合约对象出错")
 		return 404, ""
@@ -39,10 +39,12 @@ func EthereumLink(keystorePath string, chainID string, pass string, contractAddr
 	auth, err := MakeAuth(pass, keystorePath, chainID)
 	// 调用合约函数
 	//_, err = contract_obj.Hold(auth, "GOD")
-	tx, err := contract_obj.Hold(auth, contractArg)
+
+	idBigInt,_ := new(big.Int).SetString(id,10)
+	tx, err := contract_obj.AddProject(auth, idBigInt, price, label)
 	// ethereum/accounts/abi/bind/base.go line:150 显示可以直接使用nil
-	holdStr, err := contract_obj.GetHold(nil)
-	fmt.Println(holdStr)
+	//holdStr, err := contract_obj.GetHold(nil)
+	//fmt.Println(holdStr)
 	//_, err = contract_obj.GetHold(auth)
 	if err != nil {
 		fmt.Println(err)
