@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 align="center" class="title">XXX软件</h1>
+    <h1 align="center" class="title">支持数据价值交换的区块链分链管理软件</h1>
     <el-row>
       <el-col :span="6">
         <el-card class="in-card">
