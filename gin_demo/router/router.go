@@ -1,9 +1,9 @@
 package router
 
 import (
-	"gin_demo/handlers"
-	"gin_demo/middleware"
 	"github.com/gin-gonic/gin"
+	"sgx-multichain/gin_demo/handlers"
+	"sgx-multichain/gin_demo/middleware"
 )
 
 func Init() {

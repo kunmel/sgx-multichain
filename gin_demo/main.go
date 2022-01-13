@@ -1,6 +1,6 @@
 package main
 
-import "gin_demo/router"
+import "sgx-multichain/gin_demo/router"
 
 func main () {
 	router.Init()

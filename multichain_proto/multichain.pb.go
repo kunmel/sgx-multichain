@@ -86,6 +86,7 @@ type NewEthRequest struct {
 	Id                   string   `protobuf:"bytes,6,opt,name=id,proto3" json:"id,omitempty"`
 	Price                string   `protobuf:"bytes,7,opt,name=price,proto3" json:"price,omitempty"`
 	Label                string   `protobuf:"bytes,8,opt,name=label,proto3" json:"label,omitempty"`
+	ContractArg          string   `protobuf:"bytes,9,opt,name=contractArg,proto3" json:"contractArg,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`

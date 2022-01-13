@@ -8,14 +8,15 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 	"io"
+	pb "kunmel.com/sgx-multichain/multichain_proto"
 	"log"
 	"net/http"
-	pb "sgx-multichain/multichain_proto"
 	"strconv"
 )
 
 
 func PutOnChain(c *gin.Context) {
+	fmt.Println("new!!!!!!!!!!!!!!!!!!!!!!!!1")
 	fabIP := ":2222"
 	fabPem := "/home/guotiezheng/go/src/sgx-multichain/key/test.pem"
 	ethIP := ":3333"
@@ -35,7 +36,7 @@ func PutOnChain(c *gin.Context) {
 		response, blockID, txID = sendFab(client, "mycc", []string{id, price, label}, "writeLedger")
 	} else if chainID == "ethereum" || priceInt >=10000 {
 		client = setupConnect(ethIP, ethPem, serverName)
-		response, blockID, txID= sendEth(client, "UTC--2021-09-15T05-28-00.066630039Z--6a2e96b16eec57ba9f21b1b5c5bdc476a2d3676f", "22b8", "123456",  "0x5b2482996b7a203150a8691966e8a3f2b9138c3f", "addProject", id, price, label)
+		response, blockID, txID= sendEth(client, "UTC--2021-09-15T05-28-00.066630039Z--6a2e96b16eec57ba9f21b1b5c5bdc476a2d3676f", "22b8", "123456",  "0x120615426fbf165d6673befb179f7faaa9f08c6a", "addProject", id, price, label)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status" : decodeRsponse(response),
@@ -60,6 +61,7 @@ func setupConnect(ip string, pemPath string, serverName string)  pb.MultichainSe
 }
 
 func sendFab(client pb.MultichainServiceClient, ccName string, ccArg []string, fcnName string) (int32, string, string) {
+	fmt.Println("====================ready to send to fabric")
 	serverStream, err := client.NewFabTx(context.Background(), &pb.NewFabRequest{
 		CCName: ccName,
 		CCArg: ccArg,

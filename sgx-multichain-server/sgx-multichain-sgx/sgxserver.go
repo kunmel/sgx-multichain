@@ -7,9 +7,9 @@ import (
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/grpclog"
 	"io"
+	pb "kunmel.com/sgx-multichain/multichain_proto"
 	"log"
 	"math/rand"
-	pb "sgx-multichain-server/multichain_proto"
 )
 
 // actually not a server but a client
